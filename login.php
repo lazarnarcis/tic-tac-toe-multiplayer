@@ -5,6 +5,11 @@
         header("location: index.php");
         exit;
     }
+
+    $login_err = "";
+    if (!empty($_GET['login_err'])) {
+        $login_err = $_GET['login_err'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +23,14 @@
 <body>
     <div>
         <form action="actions.php?action=login" method="post">
-            <input type="text" name="username">
-            <input type="password" name="password">
+            <h1>Login</h1>
+            <div>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <input type="password" name="password" required>
+            </div>
+            <p><?php echo $login_err; ?></p>
             <input type="submit" value="Login">
             <p>Please <a href="register.php">register</a></p>
         </form>

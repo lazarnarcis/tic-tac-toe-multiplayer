@@ -5,6 +5,10 @@
         header("location: index.php");
         exit;
     }
+    $register_err = "";
+    if (!empty($_GET['register_err'])) {
+        $register_err = $_GET['register_err'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +22,14 @@
 <body>
     <div>
         <form action="actions.php?action=register" method="post">
-            <input type="text" name="username">
-            <input type="password" name="password">
+            <h1>Register</h1>
+            <div>
+                <input type="text" name="username" required>
+            </div>
+            <div>
+                <input type="password" name="password" required>
+            </div>
+            <p><?php echo $register_err; ?></p>
             <input type="submit" value="Register">
             <p>Please <a href="login.php">login</a></p>
         </form>
