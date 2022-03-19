@@ -21,9 +21,33 @@
 
         $_SESSION['logged'] = true;
         $_SESSION['username'] = $username;
+        $_SESSION['id'] = mysqli_insert_id($sql);
 
         if ($result) {
             header("location: index.php");
+        }
+    } else if ($action == "challenge_user") {
+        $first_user = $_SESSION['id'];
+        $second_user = $_POST['user_id'];
+
+        $string_1 = "INSERT INTO challenges (first_user, second_user, accepted) VALUES ('$first_user', '$second_user', 0)";
+        mysqli_query($sql, $string_1);
+    } else if ($action == "load_challenges") { 
+        $second_id = $_SESSION['id'];
+        $string = "SELECT * FROM challenges WHERE second_user=$second_id";
+        $result = mysqli_query($sql, $string);
+        if (mysqli_num_rows($result)) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $by = $row['first_user'];
+                $string_1 = "SELECT * FROM users WHERE id_user=$by";
+                $result_1 = mysqli_query($sql, $string_1);
+                $row_1 = mysqli_fetch_assoc($result_1);
+                $by = $row_1['username'];
+
+                echo '<div>challenged by '.$by.'</div>';
+            }
+        } else {
+            echo "<div>No challenges!</div>";
         }
     } else if ($action == "login") {
         $username = $_POST['username'];
@@ -50,6 +74,8 @@
         if ($acces == 1) {
             $_SESSION['logged'] = true;
             $_SESSION['username'] = $username;
+            $_SESSION['id'] = $row['id_user'];
+
             $string_1 = "UPDATE users SET logged=1 WHERE username='$username'";
             $result_1 = mysqli_query($sql, $string_1);
 
