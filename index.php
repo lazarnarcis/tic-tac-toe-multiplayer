@@ -23,10 +23,17 @@
                 });
                 return false;
             });
+
+            $(document).on('submit', '#challenge_accepted', function() {
+                $.post("actions.php?action=challenge_accepted", $(this).serialize()).done(function(data) {
+                    alert("Challenge accepted!");
+                });
+                return false;
+            });
             
             function load_challenges() {
                 $("#challenges").load("actions.php?action=load_challenges");
-                setTimeout(load_challenges, 500);
+                setTimeout(load_challenges, 2500);
             }
             load_challenges();
         });

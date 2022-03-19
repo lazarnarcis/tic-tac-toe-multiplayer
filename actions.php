@@ -42,13 +42,27 @@
                 $string_1 = "SELECT * FROM users WHERE id_user=$by";
                 $result_1 = mysqli_query($sql, $string_1);
                 $row_1 = mysqli_fetch_assoc($result_1);
-                $by = $row_1['username'];
+                $by_user = $row_1['username'];
 
-                echo '<div>challenged by '.$by.'</div>';
+                echo '<div>
+                        <span>challenged by '.$by_user.'</span>
+                        <form id="challenge_accepted">
+                            <input type="text" style="display: none" name="first_id" value="'.$by.'" />
+                            <input type="text" style="display: none" name="second_id" value="'.$second_id.'" />
+                            <input type="submit" value="Accept '.$by_user.'\'s challenge" />
+                        </form>
+                    </div>
+                ';
             }
         } else {
             echo "<div>No challenges!</div>";
         }
+    } else if ($action == "challenge_accepted") {
+        $first_user = $_POST['first_id'];
+        $second_user = $_POST['second_id'];
+        
+        $string_1 = "UPDATE challenges SET accepted=1 WHERE first_user=$first_user AND second_user=$second_user";
+        mysqli_query($sql, $string_1);
     } else if ($action == "login") {
         $username = $_POST['username'];
         $password = $_POST['password'];
