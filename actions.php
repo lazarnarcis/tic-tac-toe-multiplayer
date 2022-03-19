@@ -34,7 +34,7 @@
         mysqli_query($sql, $string_1);
     } else if ($action == "load_challenges") { 
         $second_id = $_SESSION['id'];
-        $string = "SELECT * FROM challenges WHERE second_user=$second_id";
+        $string = "SELECT * FROM challenges WHERE second_user=$second_id AND accepted=0";
         $result = mysqli_query($sql, $string);
         if (mysqli_num_rows($result)) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -44,7 +44,8 @@
                 $row_1 = mysqli_fetch_assoc($result_1);
                 $by_user = $row_1['username'];
 
-                echo '<div>
+                echo '
+                    <div>
                         <span>challenged by '.$by_user.'</span>
                         <form id="challenge_accepted">
                             <input type="text" style="display: none" name="first_id" value="'.$by.'" />
