@@ -15,16 +15,27 @@
     if ($action == "register") {
         $username = $_POST['username'];
         $password = $_POST['password'];
+        $acces = 1;
 
-        $string = "INSERT INTO users (username, password, logged) VALUES ('".$username."', '".$password."', 1)";
-        $result = mysqli_query($sql, $string);
+        $string_1 = "SELECT * FROM users WHERE username='$username'";
+        $result_1 = mysqli_query($sql, $string_1);
 
-        $_SESSION['logged'] = true;
-        $_SESSION['username'] = $username;
-        $_SESSION['id'] = mysqli_insert_id($sql);
+        if (mysqli_num_rows($result_1)) {
+            $message = "Username already exists.";
+            header("location: register.php?register_err=$message");
+            $acces = 0;
+        }
+        if ($acces == 1) {
+            $string = "INSERT INTO users (username, password, logged) VALUES ('".$username."', '".$password."', 1)";
+            $result = mysqli_query($sql, $string);
 
-        if ($result) {
-            header("location: index.php");
+            $_SESSION['logged'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['id'] = mysqli_insert_id($sql);
+
+            if ($result) {
+                header("location: index.php");
+            }
         }
     } else if ($action == "challenge_user") {
         $first_user = $_SESSION['id'];
