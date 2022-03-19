@@ -16,7 +16,7 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $string = "INSERT INTO users (username, password) VALUES ('".$username."', '".$password."')";
+        $string = "INSERT INTO users (username, password, logged) VALUES ('".$username."', '".$password."', 1)";
         $result = mysqli_query($sql, $string);
 
         $_SESSION['logged'] = true;
@@ -50,8 +50,12 @@
         if ($acces == 1) {
             $_SESSION['logged'] = true;
             $_SESSION['username'] = $username;
+            $string_1 = "UPDATE users SET logged=1 WHERE username='$username'";
+            $result_1 = mysqli_query($sql, $string_1);
 
-            header("location: index.php");
+            if ($result_1) {
+                header("location: index.php");
+            }
         }
     }
     
